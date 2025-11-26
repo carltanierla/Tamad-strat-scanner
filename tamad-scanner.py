@@ -96,7 +96,7 @@ def run_scan():
                     
                     if pattern:
                         price = df.iloc[-1]['close']
-                        emoji = "🔴" if "BULLISH" in pattern else "🟢"
+                        emoji = "🟢" if "BULLISH" in pattern else "🔴"
                         alerts.append(f"{emoji} **{symbol}** [{tf}]\n`{pattern}`\nPrice: `{price}`")
                         print(f"Found: {symbol} {tf} {pattern}")
                 except Exception:
@@ -121,4 +121,5 @@ def run_scan():
 
 if __name__ == "__main__":
     run_scan()
+
 
