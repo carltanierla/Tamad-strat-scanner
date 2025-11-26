@@ -49,9 +49,9 @@ def check_pattern(df, tolerance=0.002):
     # Both High and Low must be within tolerance
     if is_equal_high and is_equal_low:
         if is_rgr:
-            return "BEARISH RGR (Red-Green-Red)"
+            return "BULLISH RGR (Red-Green-Red)"
         if is_grg:
-            return "BULLISH GRG (Green-Red-Green)"
+            return "BEARISH GRG (Green-Red-Green)"
 
     return None
 
@@ -96,7 +96,7 @@ def run_scan():
                     
                     if pattern:
                         price = df.iloc[-1]['close']
-                        emoji = "🟢" if "BULLISH" in pattern else "🔴"
+                        emoji = "🔴" if "BULLISH" in pattern else "🟢"
                         alerts.append(f"{emoji} **{symbol}** [{tf}]\n`{pattern}`\nPrice: `{price}`")
                         print(f"Found: {symbol} {tf} {pattern}")
                 except Exception:
@@ -121,3 +121,4 @@ def run_scan():
 
 if __name__ == "__main__":
     run_scan()
+
