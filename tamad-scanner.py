@@ -10,7 +10,7 @@ WEBHOOK_URL = os.environ.get('WEBHOOK_URL')
 
 TIMEFRAMES = ['30m', '1h', '4h']
 TOLERANCE_PCT = 0.2  # 0.2% Tolerance
-LIMIT_PAIRS = 60     # Top 60 pairs
+LIMIT_PAIRS = 100    # <--- UPDATED: Scans Top 100 Pairs
 
 # --- PATTERN LOGIC ---
 def check_pattern(df, tolerance=0.002):
@@ -78,13 +78,13 @@ def run_scan():
         sorted_pairs = sorted(valid_pairs, key=lambda x: x['volume'], reverse=True)
         top_list = [x['symbol'] for x in sorted_pairs[:LIMIT_PAIRS]]
         
-        print(f"📋 Scanning {len(top_list)} pairs...")
+        print(f"📋 Scanning Top {len(top_list)} pairs...")
         
         alerts = []
 
         # 2. Loop
         for symbol in top_list:
-            # Short pause to be nice to API
+            # Short pause to avoid rate limits (safe for 100 pairs)
             time.sleep(0.05) 
             
             for tf in TIMEFRAMES:
@@ -96,7 +96,6 @@ def run_scan():
                     
                     if pattern:
                         price = df.iloc[-1]['close']
-                        # Add Emoji based on Bullish/Bearish
                         emoji = "🟢" if "BULLISH" in pattern else "🔴"
                         alerts.append(f"{emoji} **{symbol}** [{tf}]\n`{pattern}`\nPrice: `{price}`")
                         print(f"Found: {symbol} {tf} {pattern}")
